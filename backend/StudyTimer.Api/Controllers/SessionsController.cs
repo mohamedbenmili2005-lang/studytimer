@@ -45,12 +45,14 @@ public class SessionsController : ControllerBase
         return new
         {
             s.Id,
+            s.SubjectId,
             Mode = s.Mode.ToString(),
             Status = s.Status.ToString(),
             s.TargetSeconds,
             s.StartedAtUtc,
             s.EndedAtUtc,
             AccumulatedSeconds = s.AccumulatedSeconds,
+            s.XpAwarded,
             ElapsedSeconds = GetElapsedSeconds(s)
         };
     }
@@ -70,6 +72,34 @@ public class SessionsController : ControllerBase
         return Ok(session == null ? null : ToResponse(session));
     }
 
+    // GET : historique paginé (plus récent d'abord)
+    [HttpGet("history")]
+    public async Task<IActionResult> History([FromQuery] int page = 1, [FromQuery] int size = 50)
+    {
+        page = Math.Max(1, page);
+        size = Math.Clamp(size, 1, 100);
+
+        var items = await _db.StudySessions
+            .AsNoTracking()
+            .Where(s => s.UserId == UserId && s.Status != SessionStatus.Running && s.Status != SessionStatus.Paused)
+            .OrderByDescending(s => s.StartedAtUtc)
+            .Skip((page - 1) * size)
+            .Take(size)
+            .Select(s => new
+            {
+                s.Id,
+                s.SubjectId,
+                Mode = s.Mode.ToString(),
+                Status = s.Status.ToString(),
+                s.StartedAtUtc,
+                s.EndedAtUtc,
+                DurationSeconds = s.Status == SessionStatus.Completed ? s.AccumulatedSeconds : 0
+            })
+            .ToListAsync();
+
+        return Ok(items);
+    }
+
     // POST : démarrer une séance
     [HttpPost("start")]
     public async Task<IActionResult> Start([FromBody] StartSessionRequest request)
@@ -86,6 +116,18 @@ public class SessionsController : ControllerBase
             return BadRequest(new { message = "Durée invalide." });
         }
 
+        if (request.SubjectId.HasValue &&
+            !await _db.Subjects.AnyAsync(x => x.Id == request.SubjectId && x.UserId == UserId))
+        {
+            return BadRequest(new { message = "Matière inconnue." });
+        }
+
+        if (request.TaskId.HasValue &&
+            !await _db.TaskItems.AnyAsync(t => t.Id == request.TaskId && t.UserId == UserId))
+        {
+            return BadRequest(new { message = "T\u00e2che inconnue." });
+        }
+
         var active = await _db.StudySessions.AnyAsync(s =>
             s.UserId == UserId &&
             (s.Status == SessionStatus.Running ||
@@ -93,7 +135,8 @@ public class SessionsController : ControllerBase
 
         if (active)
         {
-            return Conflict(new {
+            return Conflict(new
+            {
                 message = "Une séance est déjà en cours."
             });
         }
@@ -103,6 +146,8 @@ public class SessionsController : ControllerBase
         var session = new StudySession
         {
             UserId = UserId,
+            SubjectId = request.SubjectId,
+            TaskId = request.TaskId,
             Mode = mode,
             Status = SessionStatus.Running,
             TargetSeconds = request.TargetSeconds,
@@ -173,6 +218,7 @@ public class SessionsController : ControllerBase
         }
 
         session.Status = SessionStatus.Completed;
+        session.XpAwarded = Gamification.XpFor(session.AccumulatedSeconds);
         session.EndedAtUtc = DateTime.UtcNow;
         session.LastResumedAtUtc = null;
 
@@ -198,4 +244,6 @@ public class StartSessionRequest
 {
     public string Mode { get; set; } = "Focus";
     public int? TargetSeconds { get; set; }
+    public Guid? TaskId { get; set; }
+    public Guid? SubjectId { get; set; }
 }

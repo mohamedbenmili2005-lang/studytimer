@@ -1,4 +1,4 @@
-﻿namespace StudyTimer.Domain.Entities;
+namespace StudyTimer.Domain.Entities;
 
 public enum SessionMode { Focus, Pomodoro, Stopwatch }
 public enum SessionStatus { Running, Paused, Completed, Rejected }
@@ -19,4 +19,5 @@ public class StudySession
     public DateTime? LastResumedAtUtc { get; set; }
     public DateTime? EndedAtUtc { get; set; }
     public int AccumulatedSeconds { get; set; }
+    public int XpAwarded { get; set; }
 }

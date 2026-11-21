@@ -1,12 +1,9 @@
-﻿import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
+/// Adresse de l'API. En production (même domaine derrière Nginx) :
+///   flutter build web --release --dart-define=API_URL=
+/// En développement : http://localhost:5293 (valeur par défaut).
+const String _apiUrl = String.fromEnvironment(
+  'API_URL',
+  defaultValue: 'http://localhost:5293',
+);
 
-/// Adresse de l'API.
-/// - Émulateur Android : 10.0.2.2 désigne le PC.
-/// - Vrai téléphone : remplacez par l'IP du PC (ex. http://192.168.1.20:5293).
-String get baseUrl {
-  if (!kIsWeb && Platform.isAndroid) return 'http://10.0.2.2:5293';
-  return 'http://localhost:5293';
-}
-
-
+String get baseUrl => _apiUrl;

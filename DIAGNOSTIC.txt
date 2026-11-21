@@ -1,0 +1,93 @@
+﻿========================================
+       RAPPORT DE DIAGNOSTIC
+========================================
+
+PROJET :
+C:\dev\studytimer
+
+NOMBRE DE FICHIERS :
+159
+
+SUJET ESTIME :
+Réseau social / messagerie
+
+LANGAGES / EXTENSIONS :
+.cs : 25 fichier(s)
+.dart : 19 fichier(s)
+.xml : 12 fichier(s)
+.png : 10 fichier(s)
+.bin : 7 fichier(s)
+.properties : 6 fichier(s)
+.lock : 6 fichier(s)
+.txt : 5 fichier(s)
+.h : 5 fichier(s)
+.ps1 : 5 fichier(s)
+.gitignore : 5 fichier(s)
+.cpp : 4 fichier(s)
+.csproj : 4 fichier(s)
+.json : 4 fichier(s)
+.kts : 3 fichier(s)
+.md : 3 fichier(s)
+.sh : 3 fichier(s)
+.yaml : 2 fichier(s)
+.yml : 2 fichier(s)
+.iml : 2 fichier(s)
+ : 2 fichier(s)
+.zip : 2 fichier(s)
+.cc : 1 fichier(s)
+.ico : 1 fichier(s)
+.svg : 1 fichier(s)
+.jar : 1 fichier(s)
+.manifest : 1 fichier(s)
+.rc : 1 fichier(s)
+.cmake : 1 fichier(s)
+.bak-chrono : 1 fichier(s)
+.html : 1 fichier(s)
+.kt : 1 fichier(s)
+.http : 1 fichier(s)
+.dump : 1 fichier(s)
+.conf : 1 fichier(s)
+.example : 1 fichier(s)
+.dockerignore : 1 fichier(s)
+.slnx : 1 fichier(s)
+.log : 1 fichier(s)
+.bat : 1 fichier(s)
+.probe : 1 fichier(s)
+.java : 1 fichier(s)
+.flutter-plugins-dependencies : 1 fichier(s)
+.metadata : 1 fichier(s)
+.env : 1 fichier(s)
+
+TECHNOLOGIES DETECTEES :
+ASP.NET, Flutter, Java, Android, Docker
+
+FICHIERS IMPORTANTS :
+C:\dev\studytimer\backend\StudyTimer.Api\appsettings.Development.json
+C:\dev\studytimer\backend\StudyTimer.Api\appsettings.json
+C:\dev\studytimer\backend\StudyTimer.Api\StudyTimer.Api.csproj
+C:\dev\studytimer\backend\StudyTimer.Domain\StudyTimer.Domain.csproj
+C:\dev\studytimer\backend\StudyTimer.Infrastructure\AppDbContext.cs
+C:\dev\studytimer\backend\StudyTimer.Infrastructure\StudyTimer.Infrastructure.csproj
+C:\dev\studytimer\backend\StudyTimer.Infrastructure\Migrations\AppDbContextModelSnapshot.cs
+C:\dev\studytimer\backend\StudyTimer.Tests\StudyTimer.Tests.csproj
+C:\dev\studytimer\mobile\study_timer\pubspec.lock
+C:\dev\studytimer\mobile\study_timer\pubspec.yaml
+C:\dev\studytimer\mobile\study_timer\README.md
+C:\dev\studytimer\mobile\study_timer\.idea\runConfigurations\main_dart.xml
+C:\dev\studytimer\mobile\study_timer\android\app\src\main\kotlin\com\studytimer\study_timer\MainActivity.kt
+C:\dev\studytimer\mobile\study_timer\lib\config.dart
+C:\dev\studytimer\mobile\study_timer\lib\main.dart
+C:\dev\studytimer\mobile\study_timer\windows\runner\main.cpp
+C:\dev\studytimer\mobile\study_timer\windows\runner\resources\app_icon.ico
+
+VERIFICATIONS STRUCTURELLES :
+Aucun problème structurel évident détecté par les contrôles simples.
+
+DATE :
+2026-11-21 16:16:53
+
+NOTE :
+Le sujet est estime a partir de mots-cles et de fichiers detectes.
+Ce diagnostic ne garantit pas la detection de tous les bugs et ne remplace
+pas une analyse complete du code et de son execution.
+========================================

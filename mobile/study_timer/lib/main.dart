@@ -1,7 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+
 import 'api.dart';
 import 'home_page.dart';
 import 'login_page.dart';
+import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,16 +25,15 @@ class _StudyAppState extends State<StudyApp> {
     return MaterialApp(
       title: 'Study Timer',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorSchemeSeed: const Color(0xFF4F46E5), useMaterial3: true),
-      darkTheme: ThemeData(
-          colorSchemeSeed: const Color(0xFF4F46E5),
-          brightness: Brightness.dark,
-          useMaterial3: true),
+      theme: buildTheme(Brightness.light),
+      darkTheme: buildTheme(Brightness.dark),
       home: loggedIn
-          ? HomePage(onLogout: () async {
-              await Api.instance.logout();
-              setState(() => loggedIn = false);
-            })
+          ? HomePage(
+              onLogout: () async {
+                await Api.instance.logout();
+                setState(() => loggedIn = false);
+              },
+            )
           : LoginPage(onLoggedIn: () => setState(() => loggedIn = true)),
     );
   }

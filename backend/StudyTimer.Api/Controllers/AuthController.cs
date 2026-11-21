@@ -1,8 +1,10 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using StudyTimer.Domain.Entities;
@@ -13,8 +15,10 @@ namespace StudyTimer.Api.Controllers;
 public record RegisterDto(string FirstName, string LastName, string Username,
                           string Email, string Password, string? Country, string? TimeZone);
 public record LoginDto(string Email, string Password);
+public record RefreshDto(string RefreshToken);
 
 [ApiController]
+[EnableRateLimiting("auth")]
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
@@ -27,21 +31,30 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
-        if (dto.Password.Length < 8) return BadRequest("Mot de passe trop court (8 min).");
+        if (string.IsNullOrWhiteSpace(dto.Email) || !dto.Email.Contains('@'))
+            return BadRequest("Email invalide.");
+        if (string.IsNullOrWhiteSpace(dto.Username) || dto.Username.Trim().Length is < 3 or > 30)
+            return BadRequest("Pseudonyme invalide (3 à 30 caractères).");
+        if (string.IsNullOrWhiteSpace(dto.FirstName) || string.IsNullOrWhiteSpace(dto.LastName))
+            return BadRequest("Prénom et nom requis.");
+        if (dto.Password is null || dto.Password.Length < 8) return BadRequest("Mot de passe trop court (8 min).");
         var email = dto.Email.Trim().ToLowerInvariant();
         if (await _db.Users.AnyAsync(u => u.Email == email || u.Username == dto.Username))
             return Conflict("Email ou pseudonyme déjà utilisé.");
 
         var user = new User
         {
-            Email = email, Username = dto.Username,
-            FirstName = dto.FirstName, LastName = dto.LastName,
-            Country = dto.Country, TimeZone = dto.TimeZone ?? "UTC"
+            Email = email,
+            Username = dto.Username,
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            Country = dto.Country,
+            TimeZone = dto.TimeZone ?? "UTC"
         };
         user.PasswordHash = _hasher.HashPassword(user, dto.Password);
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
-        return Ok(new { token = CreateToken(user) });
+        return Ok(await Issue(user));
     }
 
     [HttpPost("login")]
@@ -54,8 +67,37 @@ public class AuthController : ControllerBase
         var result = _hasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
         if (result == PasswordVerificationResult.Failed) return Unauthorized("Identifiants invalides.");
 
-        return Ok(new { token = CreateToken(user) });
+        return Ok(await Issue(user));
     }
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh(RefreshDto dto)
+    {
+        var hash = Hash(dto.RefreshToken);
+        var rt = await _db.RefreshTokens.Include(r => r.User)
+                    .FirstOrDefaultAsync(r => r.TokenHash == hash);
+        if (rt is null || rt.RevokedAtUtc is not null || rt.ExpiresAtUtc < DateTime.UtcNow)
+            return Unauthorized("Session expirée.");
+
+        rt.RevokedAtUtc = DateTime.UtcNow;      // rotation : un refresh token ne sert qu'une fois
+        return Ok(await Issue(rt.User));        // Issue enregistre aussi la révocation
+    }
+
+    private async Task<object> Issue(User user)
+    {
+        var raw = Convert.ToBase64String(RandomNumberGenerator.GetBytes(48));
+        _db.RefreshTokens.Add(new RefreshToken
+        {
+            UserId = user.Id,
+            TokenHash = Hash(raw),
+            ExpiresAtUtc = DateTime.UtcNow.AddDays(30)
+        });
+        await _db.SaveChangesAsync();
+        return new { token = CreateToken(user), refreshToken = raw };
+    }
+
+    private static string Hash(string s) =>
+        Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(s)));
 
     private string CreateToken(User user)
     {

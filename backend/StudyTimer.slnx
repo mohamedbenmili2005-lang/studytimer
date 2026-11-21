@@ -2,4 +2,5 @@
   <Project Path="StudyTimer.Api/StudyTimer.Api.csproj" />
   <Project Path="StudyTimer.Domain/StudyTimer.Domain.csproj" />
   <Project Path="StudyTimer.Infrastructure/StudyTimer.Infrastructure.csproj" />
+  <Project Path="StudyTimer.Tests/StudyTimer.Tests.csproj" />
 </Solution>
