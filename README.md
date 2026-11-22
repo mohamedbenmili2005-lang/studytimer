@@ -118,3 +118,18 @@ docker-compose.yml  PostgreSQL + API + Nginx + sauvegardes
 ## Auteur
 
 Projet réalisé dans le cadre d'un mini-projet de développement mobile avancé.
+<img width="720" height="1600" alt="ee1df266-033d-474a-9870-698c33bc5a4b" src="https://github.com/user-attachments/assets/ea55a982-6d2c-4735-8069-a163be9516d4" />
+<img width="720" height="1600" alt="9ef06019-771e-47e5-8cc5-19e1d9ca2c09" src="https://github.com/user-attachments/assets/de620e1f-b055-41e9-964a-5c033cd2b931" />
+<img width="720" height="1600" alt="0af9ebbb-12ac-4b53-925d-71a0c81569e9" src="https://github.com/user-attachments/assets/f88db281-a507-4992-992c-c5ac3e3863fd" />
+<img width="720" height="1600" alt="1f5462c6-8615-43fa-895d-bf800943ec17" src="https://github.com/user-attachments/assets/d0cae7f0-a8ac-4b8e-98f3-df56462551de" />
+<img width="720" height="1600" alt="9ef06019-771e-47e5-8cc5-19e1d9ca2c09" src="https://github.com/user-attachments/assets/20c5f0a9-c584-4f9a-a28c-08f2cc6e86f7" />
+<img width="720" height="1600" alt="86c42db8-bbb2-4e36-a462-37e825180740" src="https://github.com/user-attachments/assets/06b9f89d-9a9f-4030-9a4f-495708088079" />
+<img width="720" height="1600" alt="556ef62a-a55d-4974-8911-36f887d94eef" src="https://github.com/user-attachments/assets/1cfa72a5-d6d4-4e0d-85a9-b00a55bdb0d6" />
+<img width="720" height="1600" alt="2268bbda-678e-45c8-b90f-fca62e5dae43" src="https://github.com/user-attachments/assets/218c0ed1-b687-442a-a142-7d44d2ec9c0f" />
+<img width="720" height="1600" alt="a3c66c27-33f1-47e7-b900-c6b0d12f8030" src="https://github.com/user-attachments/assets/e3f0a23b-954a-4808-a25e-a9c9b09c5cb0" />
+<img width="720" height="1600" alt="a8c4e58b-21c1-488a-a36c-98935d0dbdbc" src="https://github.com/user-attachments/assets/a53120a7-e114-411b-bdd4-64fcd902352f" />
+<img width="720" height="1600" alt="b2abddfe-6f22-4d57-8071-d161a2ed9bfa" src="https://github.com/user-attachments/assets/4265355e-9f0c-4f13-b71d-b500744e5520" />
+<img width="720" height="1600" alt="f408c922-aed0-4f24-8d97-4a03bf7fd392" src="https://github.com/user-attachments/assets/89ce86ed-999e-417a-a738-18c6c484b05d" />
+<img width="720" height="1600" alt="fe315d13-46ae-472a-b7e1-64808753d5c7" src="https://github.com/user-attachments/assets/9a35607b-c8e2-41a4-a347-8a77095d779d" />
+
+
